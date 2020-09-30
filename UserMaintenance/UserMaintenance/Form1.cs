@@ -12,8 +12,27 @@ namespace UserMaintenance
 {
     public partial class Form1 : Form
     {
+        BindingList<User> users = new BindingList<User>();
+        
         public Form1()
         {
+
+            listUsers.DataSource = users;
+            listUsers.ValueMember = "ID";
+            listUsers.DisplayMember = "Full Name";
+
+
+            var u = new User();
+            {
+                LastName = txtLastName.Text;
+                Firstname = txtFirstName.Text;
+            }
+
+            users.Add(u);
+
+
+            
+            
             InitializeComponent();
             label1LastName.Text = Resource1.LastName;
             label2FirstName.Text = Resource1.LastName;
