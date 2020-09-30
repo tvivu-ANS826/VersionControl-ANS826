@@ -24,8 +24,9 @@ namespace UserMaintenance
 
             var u = new User();
             {
-                LastName = txtLastName.Text;
-                Firstname = txtFirstName.Text;
+                /* LastName = txtLastName.Text;
+                 Firstname = txtFirstName.Text; */
+                FullName = txtFullName;
             }
 
             users.Add(u);
@@ -34,8 +35,9 @@ namespace UserMaintenance
             
             
             InitializeComponent();
-            label1LastName.Text = Resource1.LastName;
-            label2FirstName.Text = Resource1.LastName;
+            /* label1LastName.Text = Resource1.LastName;
+             label2FirstName.Text = Resource1.LastName; */
+            label1FullName.Text = Resource1.Fullname;
             button1Add.Text = Resource1.Add;
 
         }
