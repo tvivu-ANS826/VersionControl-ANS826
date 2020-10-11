@@ -145,6 +145,9 @@ namespace Excel
             Range utolsosor = xlSheet.get_Range(GetCell(Flats.Count + 1, 1), GetCell(Flats.Count + 1, headers.Length));
             utolsosor.Interior.Color = Color.LightGreen;
             utolsosor.NumberFormat = "###.00";
+
+            Range azOsszes = xlSheet.get_Range(GetCell(2, 1), GetCell(Flats.Count + 1, headers.Length));
+            azOsszes.BorderAround2(Excelq.XlLineStyle.xlContinuous, Excelq.XlBorderWeight.xlThick);
         }
 
 
