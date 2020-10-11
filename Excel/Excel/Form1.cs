@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Data.Entity.Migrations.Model;
 using System.Drawing.Text;
 using System.Windows.Markup;
+using Microsoft.Office.Interop.Excel;
 
 namespace Excel
 {
@@ -83,7 +84,7 @@ namespace Excel
                 "Négyzetméter ár (Ft/m2)",
             };
 
-            for (int cells = 1; cells < length; cells++)
+            for (int cells = 1; cells < headers.Length; cells++)
             {
                 xlSheet.Cells[1, 1] = headers[0];
 
@@ -101,25 +102,13 @@ namespace Excel
                                 GetCell(2, 1),
                                 GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
-                    GetCell string = "A9";
+                    xlSheet.get_Range(GetCell(9, counter)).Value2 = "=G"+counter.ToString()+"*H"+counter.ToString();
+                    
                 }
             }
 
-            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
-            headerRange.Font.Bold = true;
-            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            headerRange.EntireColumn.AutoFit();
-            headerRange.RowHeight = 40;
-            headerRange.Interior.Color = Color.LightBlue;
-            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
-
-
-
+        
         }
-
-
-       
 
         private string GetCell(int x, int y)
         {
@@ -136,6 +125,26 @@ namespace Excel
             ExcelCoordinate += x.ToString();
 
             return ExcelCoordinate;
+        }
+
+        private void FormatingTable(string [] headers)
+        {
+            Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excelq.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excelq.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excelq.XlLineStyle.xlContinuous, Excelq.XlBorderWeight.xlThick);
+
+            Range elsosor = xlSheet.get_Range(GetCell(2, 1), GetCell(2, headers.Length));
+            elsosor.Font.Bold = true;
+            elsosor.Interior.Color = Color.LightYellow;
+
+            Range utolsosor = xlSheet.get_Range(GetCell(Flats.Count + 1, 1), GetCell(Flats.Count + 1, headers.Length));
+            utolsosor.Interior.Color = Color.LightGreen;
+            utolsosor.NumberFormat = "###.00";
         }
 
 
