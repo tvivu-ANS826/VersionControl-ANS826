@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VAR_os.Entities;
 
 namespace VAR_os
 {
@@ -106,8 +108,42 @@ namespace VAR_os
             }
             return value;
 
-            
-           
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.InitialDirectory = Application.StartupPath;
+            sfd.Filter = "Excel (*.xls)|*.xls";
+            sfd.DefaultExt = "excel";
+            sfd.AddExtension = true;
+
+            DialogResult eredmény = sfd.ShowDialog();
+
+            StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8);
+
+            foreach (var s in Ticks)
+            {
+                
+               /* sw.Write(s.Nyereség);
+                sw.Write(";");
+                sw.Write(s.Időszak.ToString());
+                sw.Write(";");
+                
+                sw.WriteLine(); */
+            }
+
+
+            StreamReader sr = new StreamReader(sfd.FileName, Encoding.Default);
+
+            string[] sor = sr.ReadLine().Split(';');
+
+            sor.Nyereség = sor[0];
+            sor.Időszak = sor[1];
+
+
 
         }
     }

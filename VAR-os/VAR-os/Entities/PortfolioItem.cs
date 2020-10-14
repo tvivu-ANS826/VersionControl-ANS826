@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace VAR_os.Entities
 {
-    public class PortfolioItem
+    public class PortfolioItem 
     {
         public string Index { get; set; }
         public decimal Volume { get; set; }
