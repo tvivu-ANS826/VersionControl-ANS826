@@ -18,7 +18,7 @@ namespace VAR_os
         List<Tick> Ticks;
 
         List<PortfolioItem> Portfolio = new List<PortfolioItem>();
-
+        List<decimal> nyereségekRendezve;
 
         public Form1()
         {
@@ -84,7 +84,7 @@ namespace VAR_os
                 Console.WriteLine(i + " " + ny);
             }
 
-            var nyereségekRendezve = (from x in Nyereségek
+            nyereségekRendezve = (from x in Nyereségek
                                       orderby x
                                       select x)
                                         .ToList();
@@ -116,32 +116,36 @@ namespace VAR_os
             SaveFileDialog sfd = new SaveFileDialog();
 
             sfd.InitialDirectory = Application.StartupPath;
-            sfd.Filter = "Excel (*.xls)|*.xls";
-            sfd.DefaultExt = "excel";
+            sfd.Filter = "Comma Separeted Value (*.csv)|*.csv";
+            sfd.DefaultExt = "csv";
             sfd.AddExtension = true;
 
             DialogResult eredmény = sfd.ShowDialog();
 
+            if (eredmény != DialogResult.OK) return;
+
             StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8);
 
-            foreach (var s in Ticks)
+            sw.WriteLine("Időszak;Nyereség");
+
+            int count = 1;
+
+            foreach (var s in nyereségekRendezve)
             {
-                
-               /* sw.Write(s.Nyereség);
+             
+                sw.Write(count.ToString());
+                count++;
                 sw.Write(";");
-                sw.Write(s.Időszak.ToString());
-                sw.Write(";");
+                sw.Write(s.ToString());
+
                 
-                sw.WriteLine(); */
+                sw.WriteLine(); 
             }
 
+            sw.Close();
 
-            StreamReader sr = new StreamReader(sfd.FileName, Encoding.Default);
 
-            string[] sor = sr.ReadLine().Split(';');
-
-            sor.Nyereség = sor[0];
-            sor.Időszak = sor[1];
+            
 
 
 
