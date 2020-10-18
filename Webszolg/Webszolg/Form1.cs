@@ -19,37 +19,17 @@ namespace Webszolg
         RateData context = new RateData();
         List<RateData> Rate;
 
-
+        
 
         public Form1()
         {
             InitializeComponent();
 
+            var response = mnbService.GetExchangeRates(request);
+            var result = response.GetExchangeRatesResult;
 
-          
 
-            var xml = new XmlDocument();
-            xml.LoadXml(result);
 
-            foreach (XmlElement element in xml.DocumentElement)
-            {
-                
-                var rate = new RateData();
-                Rate.Add(rate);
-
-                
-                rate.Date = DateTime.Parse(element.GetAttribute("date"));
-
-               
-                var childElement = (XmlElement)element.ChildNodes[0];
-                rate.Currency = childElement.GetAttribute("curr");
-
-               
-                var unit = decimal.Parse(childElement.GetAttribute("unit"));
-                var value = decimal.Parse(childElement.InnerText);
-                if (unit != 0)
-                    rate.Value = value / unit;
-            }
 
             Rate = context.Rate.ToList();
             dataGridView1.DataSource = Rate;
@@ -63,11 +43,36 @@ namespace Webszolg
                 endDate = "2020-06-30"
             };
 
-            var response = mnbService.GetExchangeRates(request);
+            var responses = mnbService.GetExchangeRates(request);
+            var results = response.GetExchangeRatesResult;
 
-            var result = response.GetExchangeRatesResult;
+
+        }
+
+        private void Creatework ()
+        {
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+
+                var rate = new RateData();
+                Rate.Add(rate);
 
 
+                rate.Date = DateTime.Parse(element.GetAttribute("date"));
+
+
+                var childElement = (XmlElement)element.ChildNodes[0];
+                rate.Currency = childElement.GetAttribute("curr");
+
+
+                var unit = decimal.Parse(childElement.GetAttribute("unit"));
+                var value = decimal.Parse(childElement.InnerText);
+                if (unit != 0)
+                    rate.Value = value / unit;
+            }
 
         }
     }
