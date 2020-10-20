@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
 using Webszolg.Entities;
 using Webszolg.MnbServiceReference;
@@ -17,7 +18,8 @@ namespace Webszolg
     public partial class Form1 : Form
     {
         RateData context = new RateData();
-        List<RateData> Rate;
+        List<RateData> Rates;
+        private string result;
 
         
 
@@ -30,9 +32,8 @@ namespace Webszolg
 
 
 
-
-            Rate = context.Rate.ToList();
-            dataGridView1.DataSource = Rate;
+            Rates = context.Rate.ToList();
+            dataGridView1.DataSource = Rates;
 
             var mnbService = new MNBArfolyamServiceSoapClient();
 
@@ -58,7 +59,7 @@ namespace Webszolg
             {
 
                 var rate = new RateData();
-                Rate.Add(rate);
+                Rates.Add(rate);
 
 
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
@@ -74,6 +75,55 @@ namespace Webszolg
                     rate.Value = value / unit;
             }
 
+        }
+
+        private void Keszitdiagram ()
+        {
+            chartRateData.DataSource = Rates;
+
+            var series = chartRateData.Series[0];
+            series.ChartType = SeriesChartType.Line;
+            series.XValueMember = "Date";
+            series.YValueMembers = "Value";
+            series.BorderWidth = 2;
+
+            var legend = chartRateData.Legends[0];
+            legend.Enabled = false;
+
+            var chartArea = chartRateData.ChartAreas[0];
+            chartArea.AxisX.MajorGrid.Enabled = false;
+            chartArea.AxisY.MajorGrid.Enabled = false;
+            chartArea.AxisY.IsStartedFromZero = false;
+            
+        }
+
+        private void RefreshData()
+        {
+            Clear(Rates);
+        }
+
+        private void Clear(List<RateData> rates)
+        {
+           /* dateTimePicker1 ClickEvent();
+            dateTimePicker2 ClickEvent();
+            ComboBox ClickEevnt(); */
+
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            RefreshData();
         }
     }
 }
