@@ -21,6 +21,11 @@ namespace Webszolg
         List<RateData> Rates;
         private string result;
 
+        List<string> Currencies;
+
+        
+
+
         
 
         public Form1()
@@ -30,7 +35,7 @@ namespace Webszolg
             var response = mnbService.GetExchangeRates(request);
             var result = response.GetExchangeRatesResult;
 
-
+            comboBox1.DataSource = Currencies;
 
             Rates = context.Rate.ToList();
             dataGridView1.DataSource = Rates;
@@ -114,16 +119,21 @@ namespace Webszolg
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             RefreshData();
+            
+
+            request =dateTimePicker1.Value ;
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
             RefreshData();
+            request = dateTimePicker2.Value;
         }
 
         private void comboBox1_MouseClick(object sender, MouseEventArgs e)
         {
             RefreshData();
+            CurrencyManager = ComboBox.SelectedItem;
         }
     }
 }
