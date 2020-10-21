@@ -17,33 +17,35 @@ namespace Webszolg
 {
     public partial class Form1 : Form
     {
-        
-        
-        List<RateData> Rates=new List<RateData>();
-        
+                
+        BindingList<RateData> Rates=new BindingList<RateData>();
 
-        List<string> Currencies;
-
-        
-
-
-        
-
+        List<string> Currencies=new List<string> () ;
+                
         public Form1()
         {
             InitializeComponent();
 
-           /* var response = mnbService.GetExchangeRates(request);
-            var result = response.GetExchangeRatesResult;
-
-            comboBox1.DataSource = Currencies; */
-
+            var mnbService = new MNBArfolyamServiceSoapClient();
+            var request = new GetCurrenciesRequestBody();
+            var responses = mnbService.GetCurrencies(request);
+            var result = responses.GetCurrenciesResult;
             
+            
+            //richTextBox1.Text = result;
+
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement element in xml.DocumentElement.ChildNodes[0])
+            {
+                Currencies.Add(element.InnerText);
+                
+            }
+            comboBox1.DataSource = Currencies;
             dataGridView1.DataSource = Rates;
-
-           
+                       
             RefreshData();
-
         }
 
         private string MNBRequest()
@@ -52,7 +54,7 @@ namespace Webszolg
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
+                currencyNames = comboBox1.SelectedItem.ToString(),
                 startDate = dateTimePicker1.Value.ToString(),
                 endDate = dateTimePicker2.Value.ToString(),
             };
@@ -73,13 +75,12 @@ namespace Webszolg
                 var rate = new RateData();
                 Rates.Add(rate);
 
-
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
-
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
                 rate.Currency = childElement.GetAttribute("curr");
-
 
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
                 var value = decimal.Parse(childElement.InnerText);
@@ -116,15 +117,11 @@ namespace Webszolg
             Creatework(abc);
             Keszitdiagram();
         }
-
-        
-
+              
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             RefreshData();
-            
-
-            
+    
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
@@ -132,9 +129,7 @@ namespace Webszolg
             RefreshData();
            
         }
-
-       
-
+              
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshData();
