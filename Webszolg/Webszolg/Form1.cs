@@ -17,9 +17,10 @@ namespace Webszolg
 {
     public partial class Form1 : Form
     {
-        RateData context = new RateData();
-        List<RateData> Rates;
-        private string result;
+        
+        
+        List<RateData> Rates=new List<RateData>();
+        
 
         List<string> Currencies;
 
@@ -32,30 +33,36 @@ namespace Webszolg
         {
             InitializeComponent();
 
-            var response = mnbService.GetExchangeRates(request);
+           /* var response = mnbService.GetExchangeRates(request);
             var result = response.GetExchangeRatesResult;
 
-            comboBox1.DataSource = Currencies;
+            comboBox1.DataSource = Currencies; */
 
-            Rates = context.Rate.ToList();
+            
             dataGridView1.DataSource = Rates;
 
+           
+            RefreshData();
+
+        }
+
+        private string MNBRequest()
+        {
             var mnbService = new MNBArfolyamServiceSoapClient();
 
             var request = new GetExchangeRatesRequestBody()
             {
                 currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString(),
             };
 
             var responses = mnbService.GetExchangeRates(request);
-            var results = response.GetExchangeRatesResult;
-
-
+            var results = responses.GetExchangeRatesResult;
+            return results;
         }
 
-        private void Creatework ()
+        private void Creatework (string result)
         {
             var xml = new XmlDocument();
             xml.LoadXml(result);
@@ -104,36 +111,35 @@ namespace Webszolg
 
         private void RefreshData()
         {
-            Clear(Rates);
+            Rates.Clear();
+            var abc =MNBRequest();
+            Creatework(abc);
+            Keszitdiagram();
         }
 
-        private void Clear(List<RateData> rates)
-        {
-           /* dateTimePicker1 ClickEvent();
-            dateTimePicker2 ClickEvent();
-            ComboBox ClickEevnt(); */
-
-
-        }
+        
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             RefreshData();
             
 
-            request =dateTimePicker1.Value ;
+            
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
             RefreshData();
-            request = dateTimePicker2.Value;
+           
         }
 
-        private void comboBox1_MouseClick(object sender, MouseEventArgs e)
+       
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshData();
-            CurrencyManager = ComboBox.SelectedItem;
         }
+
+        
     }
 }
