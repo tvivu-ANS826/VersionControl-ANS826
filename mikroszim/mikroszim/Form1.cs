@@ -20,6 +20,11 @@ namespace mikroszim
         public Form1()
         {
             InitializeComponent();
+            Population = GetPopulation(@"C:\Temp\nép.csv");
+            BirthProbabilities = Birth(@"C:\Temp\születés.csv");
+            DeathProbabilities = Death(@"C:\Temp\halál.csv");
+
+
         }
 
         public List<Person> GetPopulation(string csvpath)
@@ -36,6 +41,48 @@ namespace mikroszim
                         BirthYear = int.Parse(line[0]),
                         Gender = (Gender)Enum.Parse(typeof(Gender), line[1]),
                         NbrOfChildren = int.Parse(line[2])
+                    });
+                }
+            }
+
+            return population;
+        }
+
+        public List<BirthProbability> Birth(string csvpath)
+        {
+            List<BirthProbability> population = new List<BirthProbability>();
+
+            using (StreamReader sr = new StreamReader(csvpath, Encoding.Default))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine().Split(';');
+                    population.Add(new BirthProbability()
+                    {
+                        BirthYear = int.Parse(line[0]),
+                        Gender = (Gender)Enum.Parse(typeof(Gender), line[1]),
+                        NbrOfChildren = int.Parse(line[2])
+                    });
+                }
+            }
+
+            return population;
+        }
+
+        public List<DeathProbability> Death (string csvpath)
+        {
+            List<DeathProbability> population = new List<DeathProbability>();
+
+            using (StreamReader sr = new StreamReader(csvpath, Encoding.Default))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var line = sr.ReadLine().Split(';');
+                    population.Add(new DeathProbability()
+                    {
+                        BirthYear = int.Parse(line[0]),
+                        Gender = (Gender)Enum.Parse(typeof(Gender), line[1]),
+                        DProbability = int.Parse(line[2])
                     });
                 }
             }

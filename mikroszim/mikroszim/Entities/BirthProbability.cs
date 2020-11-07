@@ -12,8 +12,6 @@ namespace mikroszim.Entities
         public int BirthYear { get; set; }
         public int NbrOfChildren { get; set; }
         public double BProbability { get; set; }
-
-
-
+        public Gender Gender { get; internal set; }
     }
 }
