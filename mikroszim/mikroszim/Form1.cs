@@ -17,6 +17,10 @@ namespace mikroszim
         List<Person> Population = new List<Person>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
+
+        Random rng = new Random(1234);
+        Random Seed = null;
+        
         public Form1()
         {
             InitializeComponent();
@@ -24,9 +28,7 @@ namespace mikroszim
             BirthProbabilities = Birth(@"C:\Temp\születés.csv");
             DeathProbabilities = Death(@"C:\Temp\halál.csv");
 
-            Random rng = new Random(1234);
-            Random Seed = null;
-            rng = Seed;
+            
 
             for (int year = 2005; year <= 2024; year++)
             {
@@ -111,6 +113,41 @@ namespace mikroszim
             }
 
             return population;
+        }
+
+        private void SimStep(int year, Person person)
+        {
+            
+            if (!person.IsAlive) return;
+
+            
+            byte age = (byte)(year - person.BirthYear);
+
+            
+            double pDeath = (from x in DeathProbabilities
+                             where x.Gender == person.Gender && x.Age == age
+                             select x.P).FirstOrDefault();
+            
+            if (rng.NextDouble() <= pDeath)
+                person.IsAlive = false;
+
+            
+            if (person.IsAlive && person.Gender == Gender.Female)
+            {
+                
+                double pBirth = (from x in BirthProbabilities
+                                 where x.Age == age
+                                 select x.P).FirstOrDefault();
+                
+                if (rng.NextDouble() <= pBirth)
+                {
+                    Person újszülött = new Person();
+                    újszülött.BirthYear = year;
+                    újszülött.NbrOfChildren = 0;
+                    újszülött.Gender = (Gender)(rng.Next(1, 3));
+                    Population.Add(újszülött);
+                }
+            }
         }
     }
 }
