@@ -18,6 +18,9 @@ namespace mikroszim
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
 
+        /*List<Malesnumber> MN = new List<Malesnumber>();
+        List<Femalelesnumber> FN = new List<Femalesnumber>(); */
+
         Random rng = new Random(1234);
         Random Seed = null;
         
@@ -125,8 +128,8 @@ namespace mikroszim
 
             
             double pDeath = (from x in DeathProbabilities
-                             where x.Gender == person.Gender && x.Age == age
-                             select x.P).FirstOrDefault();
+                             where x.Gender == person.Gender && x.BirthYear == age
+                             select x.DProbability).FirstOrDefault();
             
             if (rng.NextDouble() <= pDeath)
                 person.IsAlive = false;
@@ -136,8 +139,8 @@ namespace mikroszim
             {
                 
                 double pBirth = (from x in BirthProbabilities
-                                 where x.Age == age
-                                 select x.P).FirstOrDefault();
+                                 where x.BirthYear == age
+                                 select x.BProbability).FirstOrDefault();
                 
                 if (rng.NextDouble() <= pBirth)
                 {
@@ -148,6 +151,26 @@ namespace mikroszim
                     Population.Add(újszülött);
                 }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Simulation();
+        }
+
+        private void Simulation()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //OpenFileDialog = new OpenFileDialog;
+        }
+
+        private void DisplayResults()
+        {
+
         }
     }
 }
