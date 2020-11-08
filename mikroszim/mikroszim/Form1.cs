@@ -18,8 +18,8 @@ namespace mikroszim
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
 
-        /*List<Malesnumber> MN = new List<Malesnumber>();
-        List<Femalelesnumber> FN = new List<Femalesnumber>(); */
+        List<Malesnumber> MN = new List<Malesnumber>();
+        List<Femalelesnumber> FN = new List<Femalesnumber>(); 
 
         Random rng = new Random(1234);
         Random Seed = null;
@@ -155,6 +155,9 @@ namespace mikroszim
 
         private void button2_Click(object sender, EventArgs e)
         {
+            richTextBox1.Clear();
+            MN.Clear();
+            FN.Clear();
             Simulation();
         }
 
@@ -165,12 +168,14 @@ namespace mikroszim
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //OpenFileDialog = new OpenFileDialog;
+            OpenFileDialog browse = new OpenFileDialog();
+            if (browse.ShowDialog() == DialogResult.OK) richTextBox1.Text = browse.FileName;
+            Population = GetPopulation(richTextBox1.Text);
         }
 
         private void DisplayResults()
         {
-
+            richTextBox1.AppendText("Szimulációs év: " + év + "\n\tFiúk: " + MN + "\n\tLányok: " + FN + "\n\n");
         }
     }
 }
