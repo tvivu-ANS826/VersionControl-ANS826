@@ -22,7 +22,7 @@ namespace Autoska
         private IToyFactory _factory;
         public IToyFactory Factory
         {
-            get { return _factory; }
+            get { return factory; }
             set
             {
                 _factory = value;
@@ -31,11 +31,11 @@ namespace Autoska
         }
 
 
-        private BallFactory _factory;
+        private BallFactory factory;
         public BallFactory IToyFactory
         {
-            get { return _factory; }
-            set { _factory = value; }
+            get { return factory; }
+            set { factory = value; }
         }
 
 
@@ -81,6 +81,12 @@ namespace Autoska
         private void button2_Click(object sender, EventArgs e)
         {
             Factory = new BallFactory();
+
+            {
+                BallColor = btnBallColor.BackColor;
+            };
+                    
+    
         }
 
         private void DisplayNext()

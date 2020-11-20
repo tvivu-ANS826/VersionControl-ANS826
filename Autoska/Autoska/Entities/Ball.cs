@@ -11,6 +11,18 @@ namespace Autoska.Entities
 {
     public class Ball : Toy
     {
+        public SolidBrush BallColor { get; private set; }
+
+        public Ball(Color color)
+        {
+            BallColor = new SolidBrush(color);
+        }
+
+        protected override void DrawImage(Graphics g)
+        {
+            g.FillEllipse(BallColor, 0, 0, Width, Height);
+        }
+
         /*public Ball()
         {
             AutoSize = false;
@@ -22,7 +34,7 @@ namespace Autoska.Entities
         private void Ball_Paint (object sender, PaintEventArgs e)
         {
             DrawImage(e.Graphics);
-        } */
+        } 
 
         protected override void DrawImage(Graphics g)
         {
@@ -33,5 +45,7 @@ namespace Autoska.Entities
         {
             Left += 1;
         }*/
+
+
     }
 }
