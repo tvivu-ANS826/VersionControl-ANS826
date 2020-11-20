@@ -23,7 +23,7 @@ namespace Autoska.Entities.Abstractions
             DrawImage(e.Graphics);
         }
 
-        protected abstract DrawImage(Graphics g);
+        protected abstract void DrawImage(Graphics g);
         
         public virtual void MoveToy()
         {
