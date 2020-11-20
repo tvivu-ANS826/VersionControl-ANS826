@@ -17,6 +17,20 @@ namespace Autoska
         // private List<Ball> _balls = new List<Ball>();
         private List<Toy> _toys = new List<Toy>();
 
+        private Toy _nextToy;
+
+        private IToyFactory _factory;
+        public IToyFactory Factory
+        {
+            get { return _factory; }
+            set
+            {
+                _factory = value;
+                DisplayNext();
+            }
+        }
+
+
         private BallFactory _factory;
         public BallFactory IToyFactory
         {
@@ -24,7 +38,7 @@ namespace Autoska
             set { _factory = value; }
         }
 
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -55,6 +69,28 @@ namespace Autoska
                 mainPanel.Controls.Remove(oldestBall);
                 _toys.Remove(oldestBall);
             }
+        }
+
+        
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Factory = new CarFactory();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Factory = new BallFactory();
+        }
+
+        private void DisplayNext()
+        {
+            if (_nextToy != null)
+                Controls.Remove(_nextToy);
+            _nextToy = Factory.CreateNew();
+            _nextToy.Top = label1Next.Top + label1Next.Height + 20;
+            _nextToy.Left = label1Next.Left;
+            Controls.Add(_nextToy);
         }
     }
 }
