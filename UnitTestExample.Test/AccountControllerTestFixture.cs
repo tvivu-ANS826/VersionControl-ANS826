@@ -10,16 +10,29 @@ namespace UnitTestExample.Test
 {
     public class AccountControllerTestFixture
     {
-        
+
         [
             Test,
             TestCase("abcd1234", false),
             TestCase("irf@uni-corvinus", false),
             TestCase("irf.uni-corvinus.hu", false),
             TestCase("irf@uni-corvinus.hu", true),
-            TestCase("0123456789",false)
-            
+            TestCase("0123456789", false)
+
         ]
+
+        public void TestRegisterHappyPath(string email, string password)
+        {
+            var accountController = new AccountController();
+
+            var actualResult = accountController.Register(email, password);
+
+            Assert.AreEqual(email, actualResult.Email);
+            Assert.AreEqual(password, actualResult.Password);
+            Assert.AreNotEqual(Guid.Empty, actualResult.ID);
+
+
+        }
         public void TestValidateEmail(string email, bool expectedResult)
         {
             var accountController = new AccountController();
