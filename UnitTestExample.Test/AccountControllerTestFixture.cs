@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnitTestExample.Controllers;
+using System.Activities;
 
 namespace UnitTestExample.Test
 {
@@ -21,6 +22,21 @@ namespace UnitTestExample.Test
 
         ]
 
+        public void TestRegisterValidateException(string email, string password)
+        {
+            var accountController = new AccountController();
+
+            try
+            {
+                var actualResult = accountController.Register(email, password);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOf<ValidationException>(ex);
+            }
+
+        }
         public void TestRegisterHappyPath(string email, string password)
         {
             var accountController = new AccountController();
