@@ -25,15 +25,17 @@ namespace UnitTestExample.Controllers
             if(!ValidateEmail(email))
                 throw new ValidationException(
                     "A megadott e-mail cím nem megfelelő!");
-            if(!ValidateEmail(email))
+            if(!ValidatePassword(password))
                 throw new ValidationException(
                     "A megadottt jelszó nem megfelelő!\n" +
                     "A jelszó legalább 8 karakter hosszú kell legyen, csak az angol ABC betűiből és számokból állhat, és tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot.");
 
             var account = new Account()
             {
+                ID = Guid.NewGuid(),
                 Email = email,
                 Password = password
+
             };
 
             var newAccount = AccountManager.CreateAccount(account);
@@ -50,9 +52,25 @@ namespace UnitTestExample.Controllers
 
         public bool ValidatePassword(string password)
         {
-            Regex.IsMatch(
-                password,
-                a"[A-Z]+()A[a-z]+()1[0-9]+()");
+           
+            if (!Regex.IsMatch(password,"^[a-zA-Z0-9]{8,}$"))
+            {
+                return false;
+            }
+                
+            if (!Regex.IsMatch(password, "[a-z]{1,}"))
+            {
+                return false;
+            }
+            if (!Regex.IsMatch(password, "[A-Z]{1,}"))
+            {
+                return false;
+            }
+            if (!Regex.IsMatch(password, "[0-9]{1,}"))
+            {
+                return false;
+            }
+            return true;
 
 
 
@@ -60,7 +78,7 @@ namespace UnitTestExample.Controllers
               Vizsgáld meg, hogy a szöveg tartalmaz-e nagybetűt. Ha nem, akkor térjen vissza a függvény false értékkel. 
              Vizsgáld meg, hogy a szöveg tartalmaz-e számot. Ha nem, akkor térjen vissza a függvény false értékkel.
              Ha minden korábbi feltételen átjutottál, akkor térj vissza true értékkel. */
-            return true;
+            
         }
     }
 }

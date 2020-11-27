@@ -14,20 +14,15 @@ namespace UnitTestExample.Test
 {
     public class AccountControllerTestFixture
     {
-
         [
-            Test,
-            TestCase("abcd1234", false),
-            TestCase("irf@uni-corvinus", false),
-            TestCase("irf.uni-corvinus.hu", false),
-            TestCase("irf@uni-corvinus.hu", true),
-            TestCase("0123456789", false)
-
+        Test,
+        TestCase("irf@uni-corvinus.hu", "Abcd1234")
         ]
+
 
         public void TestRegisterApplicationException(string newEmail, string newPassword)
         {
-            // Arrange
+            // Arrange szakasz
             var accountServiceMock = new Mock<IAccountManager>(MockBehavior.Strict);
             accountServiceMock
                 .Setup(m => m.CreateAccount(It.IsAny<Account>()))
@@ -35,7 +30,7 @@ namespace UnitTestExample.Test
             var accountController = new AccountController();
             accountController.AccountManager = accountServiceMock.Object;
 
-            // Act
+            // Act szakasz
             try
             {
                 var actualResult = accountController.Register(newEmail, newPassword);
@@ -46,10 +41,19 @@ namespace UnitTestExample.Test
                 Assert.IsInstanceOf<ApplicationException>(ex);
             }
 
-            // Assert
+            // Assert szakasz
         }
 
 
+        [
+        Test,
+        TestCase("irf@uni-corvinus", "Abcd1234"),
+        TestCase("irf.uni-corvinus.hu", "Abcd1234"),
+        TestCase("irf@uni-corvinus.hu", "abcd1234"),
+        TestCase("irf@uni-corvinus.hu", "ABCD1234"),
+        TestCase("irf@uni-corvinus.hu", "abcdABCD"),
+        TestCase("irf@uni-corvinus.hu", "Ab1234")
+        ]
 
 
         public void TestRegisterValidateException(string email, string password)
@@ -67,6 +71,13 @@ namespace UnitTestExample.Test
             }
 
         }
+
+        [
+            Test,
+            TestCase("irf@uni-corvinus.hu", "Abcd1234"),
+            TestCase("irf@uni-corvinus.hu", "Abcd1234567"),
+         ]
+
         public void TestRegisterHappyPath(string email, string password)
         {
             var accountServiceMock = new Mock<IAccountManager>(MockBehavior.Strict);
@@ -75,9 +86,7 @@ namespace UnitTestExample.Test
                 .Returns<Account>(a => a);
             var accountController = new AccountController();
             accountController.AccountManager = accountServiceMock.Object;
-
-
-            //var accountController = new AccountController();
+                       
 
             var actualResult = accountController.Register(email, password);
 
@@ -88,6 +97,15 @@ namespace UnitTestExample.Test
 
 
         }
+        [
+           Test,
+           TestCase("abcd1234", false),
+           TestCase("irf@uni-corvinus", false),
+           TestCase("irf.uni-corvinus.hu", false),
+           TestCase("irf@uni-corvinus.hu", true),
+           TestCase("0123456789", false)
+
+       ]
         public void TestValidateEmail(string email, bool expectedResult)
         {
             var accountController = new AccountController();
@@ -98,7 +116,7 @@ namespace UnitTestExample.Test
         }
 
         //"A megadottt jelszó nem megfelelő!\n" +
-         //           "A jelszó legalább 8 karakter hosszú kell legyen, csak az angol ABC betűiből és számokból állhat, 
+        //           "A jelszó legalább 8 karakter hosszú kell legyen, csak az angol ABC betűiből és számokból állhat, 
         //és tartalmaznia kell legalább egy kisbetűt, egy nagybetűt és egy számot.");
 
 
@@ -108,7 +126,7 @@ namespace UnitTestExample.Test
             TestCase("AbcdefghLjhghgh@", false),
             TestCase("ABCDEFG1", false),
             TestCase("abcdefg1", false),
-            TestCase("ac1A",false),
+            TestCase("ac1A", false),
             TestCase("Abcdefg1", true),
 
 
