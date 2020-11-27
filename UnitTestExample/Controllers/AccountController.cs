@@ -50,6 +50,16 @@ namespace UnitTestExample.Controllers
 
         public bool ValidatePassword(string password)
         {
+            Regex.IsMatch(
+                password,
+                a"[A-Z]+()A[a-z]+()1[0-9]+()");
+
+
+
+             /*Vizsgáld meg, hogy a szöveg tartalmaz-e kisbetűt. Ha nem, akkor térjen vissza a függvény false értékkel.
+              Vizsgáld meg, hogy a szöveg tartalmaz-e nagybetűt. Ha nem, akkor térjen vissza a függvény false értékkel. 
+             Vizsgáld meg, hogy a szöveg tartalmaz-e számot. Ha nem, akkor térjen vissza a függvény false értékkel.
+             Ha minden korábbi feltételen átjutottál, akkor térj vissza true értékkel. */
             return true;
         }
     }
