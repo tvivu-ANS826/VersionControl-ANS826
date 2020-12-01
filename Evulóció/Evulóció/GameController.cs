@@ -9,9 +9,6 @@ namespace Evulóció
 {
     public class GameController
     {
-        internal GameArea ActivateDisplay()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
